@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG MMRelay_Version=#0.5.1
+ARG MMRelay_Version=#0.5.0
 
 FROM python:3-slim-bookworm
 
