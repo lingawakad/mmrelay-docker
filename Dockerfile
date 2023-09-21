@@ -9,15 +9,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   && rm -rf /var/lib/apt/lists/* \
   && rm -rf /tmp/*
 
-RUN useradd --no-log-init --create-home --shell /bin/sh mmrelay
+RUN useradd --no-log-init --create-home mmrelay
 
 USER mmrelay
 
-WORKDIR /srv
+WORKDIR /home/mmrelay
 
-ADD https://github.com/geoffwhittington/meshtastic-matrix-relay.git${MMRelay_Version} /srv
+ADD https://github.com/geoffwhittington/meshtastic-matrix-relay.git${MMRelay_Version} /home/mmrelay
 
-VOLUME /srv
+VOLUME /home/mmrelay
 
 RUN pip install -r requirements.txt
 
