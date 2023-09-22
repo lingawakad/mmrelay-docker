@@ -8,9 +8,9 @@ FROM python:3-slim-bookworm
 
 # install sqlite3
 #RUN apt-get update && apt-get install -y --no-install-recommends \
-  sqlite3 \
-  && rm -rf /var/lib/apt/lists/* \
-  && rm -rf /tmp/*
+#  sqlite3 \
+#  && rm -rf /var/lib/apt/lists/* \
+#  && rm -rf /tmp/*
 
 # don't run as root
 RUN useradd --no-log-init --create-home mmrelay
