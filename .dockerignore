@@ -1,0 +1,7 @@
+Dockerfile
+.dockerignore
+.git*
+example_plugins
+gui
+*.md
+*.yaml

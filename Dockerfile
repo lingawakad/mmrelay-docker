@@ -1,31 +1,36 @@
 # syntax=docker/dockerfile:1
 
-# version control
-ARG MMRelay_Version=#0.5.1
+ARG python=python:3-slim
+ARG version=0.5.1
 
-# this is a python app, so use python base
-FROM python:3-slim-bookworm
+# build stage
+FROM ${python} AS build
 
-# install sqlite3
-#RUN apt-get update && apt-get install -y --no-install-recommends \
-#  sqlite3 \
-#  && rm -rf /var/lib/apt/lists/* \
-#  && rm -rf /tmp/*
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
-# don't run as root
+ADD /mmrelay/ .
+
+RUN pip install setuptools wheel \
+  && pip install -r requirements.txt
+
+# final stage
+FROM ${python} AS run
+
+LABEL org.opencontainers.image.description "A powerful and easy-to-use relay between Meshtastic devices and Matrix chat rooms, allowing seamless communication across platforms"
+LABEL org.opencontainers.image.title "MMRelay"
+LABEL org.opencontainers.image.version ${version}
+
 RUN useradd --no-log-init --create-home mmrelay
 
 USER mmrelay
 
-WORKDIR /home/mmrelay
+COPY --from=build /opt/venv /home/mmrelay/venv
+ENV PATH="/home/mmrelay/venv/bin:$PATH"
 
-# should probably change this to a copy?
-ADD https://github.com/geoffwhittington/meshtastic-matrix-relay.git${MMRelay_Version} /home/mmrelay
+WORKDIR /home/mmrelay/venv
 
-# make a place to mount config.yaml
-VOLUME /home/mmrelay
+VOLUME /home/mmrelay/venv
 
-# python gonna python
-RUN pip install -r requirements.txt
-
-ENTRYPOINT python main.py
+ENTRYPOINT main.py

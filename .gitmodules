@@ -1,0 +1,3 @@
+[submodule "mmrelay"]
+	path = mmrelay
+	url = https://github.com/geoffwhittington/meshtastic-matrix-relay
