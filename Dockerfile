@@ -8,11 +8,7 @@ USER mmrelay
 
 WORKDIR /home/mmrelay
 
-ADD /mmrelay/ .
-
-ENV VIRTUAL_ENV=/home/mmrelay
-RUN python3 -m venv $VIRTUAL_ENV
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ADD https://github.com/geoffwhittington/meshtastic-matrix-relay /home/mmrelay
 
 RUN pip install setuptools wheel \
   && pip install -r requirements.txt
