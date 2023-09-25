@@ -1,10 +1,11 @@
 # syntax=docker/dockerfile:1
 
-ARG MMRelay_Version=#0.5.1
-ARG python=python:slim
+ARG python=python:alpine
 
 # build stage
 FROM ${python} AS build
+
+RUN apk add build-base
 
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
@@ -17,7 +18,9 @@ RUN pip install -r requirements.txt
 # deploy stage
 FROM ${python} AS final
 
-RUN useradd --no-log-init --no-create-home mmrelay
+RUN apk add --no-cache libstdc++
+
+RUN adduser -DH mmrelay
 
 USER mmrelay
 
