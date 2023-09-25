@@ -1,19 +1,30 @@
 # syntax=docker/dockerfile:1
 
 ARG MMRelay_Version=#0.5.1
+ARG python=python:slim
 
-FROM python:3-slim-bookworm
+# build stage
+FROM ${python} AS build
 
-RUN useradd --no-log-init --create-home mmrelay
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+WORKDIR /opt/venv
+
+COPY /mmrelay/ .
+
+RUN pip install -r requirements.txt
+
+# deploy stage
+FROM ${python} AS final
+
+RUN useradd --no-log-init --no-create-home mmrelay
 
 USER mmrelay
 
-WORKDIR /home/mmrelay
+ENV PATH="/opt/venv/bin:$PATH"
+WORKDIR /opt/venv
+VOLUME /opt/venv/
 
-ADD https://github.com/geoffwhittington/meshtastic-matrix-relay.git${MMRelay_Version} /home/mmrelay
-
-VOLUME /home/mmrelay
-
-RUN pip install -r requirements.txt
+COPY --from=build /opt/venv /opt/venv
 
 ENTRYPOINT python main.py
