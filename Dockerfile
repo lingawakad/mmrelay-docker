@@ -1,39 +1,37 @@
 # syntax=docker/dockerfile:1
-# test change
 
-ARG python=python:alpine
+ARG python=python:slim
 
 # build stage
-FROM ${python} AS build
+FROM --platform=linux/arm64 ${python} AS build
 
-RUN apk add build-base
+RUN apt-get update \
+  && apt-get install gcc -y
 
-RUN adduser -D mmrelay
+RUN adduser --disabled-password mmrelay
 
 USER mmrelay
 
-WORKDIR /home/mmrelay/venv
+WORKDIR /home/mmrelay
 
-RUN python -m venv /home/mmrelay/venv
-ENV PATH="/home/mmrelay/venv/bin:$PATH"
+RUN python -m venv /home/mmrelay
+ENV PATH="/home/mmrelay/bin:$PATH"
 
 COPY /mmrelay/ .
 
 RUN pip install -r requirements.txt
 
 # deploy stage
-FROM ${python} AS final
+FROM --platform=linux/arm64 ${python} AS final
 
-RUN apk add --no-cache libstdc++
-
-RUN adduser -D mmrelay
+RUN adduser --disabled-password mmrelay
 
 USER mmrelay
 
-ENV PATH="/home/mmrelay/venv/bin:$PATH"
-WORKDIR /home/mmrelay/venv
-VOLUME /home/mmrelay/venv/
+ENV PATH="/home/mmrelay/bin:$PATH"
+WORKDIR /home/mmrelay
+VOLUME /home/mmrelay
 
-COPY --from=build /home/mmrelay/venv /home/mmrelay/venv
+COPY --from=build /home/mmrelay/ /home/mmrelay/
 
 ENTRYPOINT python main.py
