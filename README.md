@@ -6,6 +6,8 @@ This project merely Dockerizes it
 
 # To Use
 
-Obtain a local copy of the [sample_config.yaml](https://github.com/geoffwhittington/meshtastic-matrix-relay/blob/58037831862c6a3fb1bb6e9db193f8317011263f/sample_config.yaml), modify it per their instructions and your use case, rename it to ```config.yaml``` and provide it to the container at the ```/home/mmrelay``` mount:
+Obtain a local copy of the [sample_config.yaml](https://github.com/geoffwhittington/meshtastic-matrix-relay/blob/58037831862c6a3fb1bb6e9db193f8317011263f/sample_config.yaml), modify it per their instructions and your use case, rename it to ```config.yaml``` and provide it to the container at the ```/home/mmrelay``` mount
 
-  ```docker run -d --name mmrelay -v ./config.yaml:/home/mmrelay/venv/config.yaml ghcr.io/lingawakad/mmrelay-docker:alpine```
+i.e.
+
+  ```docker run -d --name mmrelay -v ./config.yaml:/home/mmrelay/config.yaml ghcr.io/lingawakad/mmrelay-docker:latest```
