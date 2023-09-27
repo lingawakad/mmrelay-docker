@@ -3,7 +3,7 @@
 ARG python=python:slim
 
 # build stage
-FROM --platform=linux/arm64 ${python} AS build
+FROM ${python} AS build
 
 RUN apt-get update \
   && apt-get install gcc -y
@@ -22,7 +22,7 @@ COPY /mmrelay/ .
 RUN pip install -r requirements.txt
 
 # deploy stage
-FROM --platform=linux/arm64 ${python} AS final
+FROM ${python} AS final
 
 RUN adduser --disabled-password mmrelay
 
