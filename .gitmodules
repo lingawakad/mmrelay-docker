@@ -1,4 +1,3 @@
-[submodule "mmrelay"]
-	path = mmrelay
-	url = https://github.com/geoffwhittington/meshtastic-matrix-relay
-  branch = v0.5.1
+[submodule "meshtastic-matrix-relay"]
+	path = meshtastic-matrix-relay
+	url = https://github.com/geoffwhittington/meshtastic-matrix-relay.git

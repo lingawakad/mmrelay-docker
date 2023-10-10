@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG python=python:slim
+ARG python=python:3.9-slim
 
 # build stage
 FROM ${python} AS build
@@ -8,23 +8,23 @@ FROM ${python} AS build
 RUN apt-get update \
   && apt-get install gcc -y
 
-RUN adduser --disabled-password mmrelay
+RUN adduser --disabled-password --no-create-home --shell /sbin/nologin mmrelay
 
 USER mmrelay
 
 WORKDIR /home/mmrelay
 
-RUN python -m venv /home/mmrelay
-ENV PATH="/home/mmrelay/bin:$PATH"
+COPY /meshtastic-matrix-relay/ .
 
-COPY /mmrelay/ .
+ENV PATH="/home/mmrelay/bin:$PATH"
+RUN python -m venv /home/mmrelay
 
 RUN pip install -r requirements.txt
 
 # deploy stage
 FROM ${python} AS final
 
-RUN adduser --disabled-password mmrelay
+RUN adduser --disabled-password --no-create-home --shell /sbin/nologin mmrelay
 
 USER mmrelay
 
