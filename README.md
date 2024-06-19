@@ -11,3 +11,34 @@ Obtain a local copy of the [sample_config.yaml](https://github.com/geoffwhitting
 i.e.
 
   ```docker run -d --name mmrelay -v ./config.yaml:/home/mmrelay/config.yaml ghcr.io/lingawakad/mmrelay-docker:latest```
+
+If you'd rather use systemd to manage the container, something along these lines should work fine:
+
+```/etc/systemd/system/mmrelay.service```
+
+```
+[Unit]
+Description=M<=>M Relay - Dockerized
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+RestartSec=30
+
+ExecStartPre=-/usr/bin/docker stop %n
+ExecStartPre=-/usr/bin/docker rm %n
+ExecStartPre=/usr/bin/docker pull ghcr.io/lingawakad/mmrelay-docker:latest
+ExecStart=/usr/bin/docker run \
+                --rm \
+                --name=%n \
+                --log-driver=none \
+                -v /mmrelay/config.yaml:/home/mmrelay/config.yaml \
+                ghcr.io/lingawakad/mmrelay-docker:latest
+
+SyslogIdentifier=mmrelay
+
+[Install]
+WantedBy=multi-user.target
+```
