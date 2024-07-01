@@ -13,19 +13,7 @@ env:
 
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
-  update_submodule:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          submodules: true # Make sure to check out the sub-module
-
-      - name: Update submodule
-        run: |
-          git submodule update --init --recursive
-          git submodule update --remote --recursive
-  build-and-push-image:
+push-image:
     runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
@@ -35,6 +23,14 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true # Make sure to check out the sub-module
+      - name: Update submodule
+        run: |
+          git submodule update --init --recursive
+          git submodule update --remote --recursive
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
