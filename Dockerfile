@@ -24,7 +24,7 @@ RUN pip install -r requirements.txt
 # deploy stage
 FROM ${python} AS final
 
-LABEL version="0.6.2"
+LABEL version="0.7.0"
 
 RUN adduser --disabled-password --no-create-home --shell /sbin/nologin mmrelay
 
