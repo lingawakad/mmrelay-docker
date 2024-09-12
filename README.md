@@ -12,13 +12,13 @@ Available in two flavors - amd64 and arm64
 
 It is probably best to run the container as a non-root user, i.e. and put the config.yaml in ```/opt``` or ```/srv``` or something. Make sure it is owned by the new user
 
-Obtain a local copy of the [sample_config.yaml](https://github.com/geoffwhittington/meshtastic-matrix-relay/blob/58037831862c6a3fb1bb6e9db193f8317011263f/sample_config.yaml), modify it per their instructions and your use case, rename it to ```config.yaml``` and provide it to the container at the ```/home/mmrelay``` mount 
+Obtain a local copy of the [sample_config.yaml](https://raw.githubusercontent.com/geoffwhittington/meshtastic-matrix-relay/main/sample_config.yaml), modify it per their instructions and your use case, rename it to ```config.yaml``` and provide it to the container at the ```/home/mmrelay``` mount 
 
 i.e.
 
-```wget -O /opt/config.yaml https://github.com/geoffwhittington/meshtastic-matrix-relay/blob/58037831862c6a3fb1bb6e9db193f8317011263f/sample_config.yaml```
+```wget -O /opt/config.yaml https://raw.githubusercontent.com/geoffwhittington/meshtastic-matrix-relay/main/sample_config.yaml```
 
-```make your changes to config.yaml```
+```vim /opt/config.yaml```
 
 ```useradd -M -s /bin/false mmrelay && chown mmrelay:mmrelay /opt/config.yaml```
 
