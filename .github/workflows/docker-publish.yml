@@ -24,14 +24,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Update submodule
-        run: |
-          git submodule update --init --recursive
-          git submodule update --remote --recursive
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: true # Make sure to check out the sub-module
+          repository: https://github.com/geoffwhittington/meshtastic-matrix-relay.git
+          ref: ${{ steps.meta.outputs.tags }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
