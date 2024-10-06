@@ -6,9 +6,8 @@ ARG python=python:3.9-slim
 FROM ${python} AS build
 
 RUN apt-get update \
-  && apt-get install gcc -y \
-  && python -m pip install --upgrade pip
-
+  && apt-get install gcc -y
+  
 RUN adduser --disabled-password --no-create-home --shell /sbin/nologin mmrelay
 
 USER mmrelay
@@ -20,7 +19,8 @@ COPY /meshtastic-matrix-relay/ .
 ENV PATH="/home/mmrelay/bin:$PATH"
 RUN python -m venv /home/mmrelay
 
-RUN pip install -r requirements.txt
+RUN python -m pip install --upgrade pip \
+  && pip install -r requirements.txt
 
 # deploy stage
 FROM ${python} AS final
