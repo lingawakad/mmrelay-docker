@@ -16,13 +16,13 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
       - name: Checkout upstream repository
         uses: actions/checkout@v4
         with:
           repository: geoffwhittington/meshtastic-matrix-relay
           ref: ${{ github.ref_name }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -43,6 +43,7 @@ jobs:
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: .
+          file: ./Dockerfile
           platforms: linux/arm64,linux/amd64
           push: true
           outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=A relay between a Matrix.org room and a Meshtastic radio,org.opencontainers.image.title=MMRelay-Docker
