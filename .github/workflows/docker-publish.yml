@@ -47,5 +47,5 @@ jobs:
           platforms: linux/arm64,linux/amd64
           push: true
           outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=A relay between a Matrix.org room and a Meshtastic radio,org.opencontainers.image.title=MMRelay-Docker
-          tags: ${{ github.ref_name }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
