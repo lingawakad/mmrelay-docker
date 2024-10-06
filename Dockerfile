@@ -35,4 +35,4 @@ VOLUME /home/mmrelay
 
 COPY --from=build /home/mmrelay/ /home/mmrelay/
 
-ENTRYPOINT python main.py
+ENTRYPOINT ["python", "main.py"]
