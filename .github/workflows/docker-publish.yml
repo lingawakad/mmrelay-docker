@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: https://github.com/geoffwhittington/meshtastic-matrix-relay.git
-          ref: ${{ env.TAG }}
+          ref: ${{ github.ref_name }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
