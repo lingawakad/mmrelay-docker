@@ -16,13 +16,13 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Checkout upstream repository
         uses: actions/checkout@v4
         with:
           repository: geoffwhittington/meshtastic-matrix-relay
           ref: ${{ github.ref_name }}
-      - name: Checkout repository
-        uses: actions/checkout@v4
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
