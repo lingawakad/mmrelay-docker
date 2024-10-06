@@ -6,7 +6,8 @@ ARG python=python:3.9-slim
 FROM ${python} AS build
 
 RUN apt-get update \
-  && apt-get install gcc -y
+  && apt-get install gcc -y \
+  && python -m pip install --upgrade pip
 
 RUN adduser --disabled-password --no-create-home --shell /sbin/nologin mmrelay
 
