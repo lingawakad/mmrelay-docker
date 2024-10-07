@@ -22,8 +22,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: geoffwhittington/meshtastic-matrix-relay
-          #ref: ${{ github.ref_name }}
-          ref: main
+          ref: ${{ github.ref_name }}
           path: meshtastic-matrix-relay
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
