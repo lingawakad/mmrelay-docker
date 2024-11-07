@@ -27,7 +27,7 @@ RUN python -m pip install --upgrade pip \
 # deploy stage
 FROM ${python} AS final
 
-RUN adduser --disabled-password --no-create-home --shell /sbin/nologin mmrelay
+RUN adduser --disabled-password --shell /sbin/nologin mmrelay
 
 USER mmrelay
 
