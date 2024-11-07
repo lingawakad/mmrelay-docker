@@ -14,6 +14,8 @@ USER mmrelay
 
 WORKDIR /home/mmrelay
 
+RUN mkdir -p /home/mmrelay/plugins/community
+
 COPY /meshtastic-matrix-relay/ .
 
 ENV PATH="/home/mmrelay/bin:$PATH"
