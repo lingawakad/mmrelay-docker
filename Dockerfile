@@ -9,15 +9,13 @@ FROM ${python} AS build
 RUN apt-get update \
   && apt-get install gcc -y
   
-RUN useradd mmrelay
+RUN useradd -m -s /bin/bash mmrelay
 
 USER mmrelay
 
 WORKDIR $(mmpath)
 
 COPY /meshtastic-matrix-relay/ .
-
-RUN chown -R mmrelay:mmrelay $(mmpath)
 
 ENV PATH="$(mmpath)/bin:$PATH"
 RUN python -m venv $(mmpath)
@@ -31,12 +29,14 @@ FROM ${python} AS final
 RUN apt-get update \
   && apt-get install git -y
 
-RUN useradd mmrelay
+RUN useradd -m -s /bin/bash mmrelay
 
 USER mmrelay
 
+WORKDIR $(mmpath)
+
 ENV PATH="$(mmpath)/bin:$PATH"
 
-COPY --from=build $(mmpath) $(mmpath)
+COPY --chown mmrelay:mmrelay --from=build $(mmpath) $(mmpath)
 
 ENTRYPOINT ["python", "main.py"]
