@@ -17,7 +17,7 @@ WORKDIR /home/mmrelay
 COPY /meshtastic-matrix-relay/ .
 
 RUN mkdir -p /home/mmrelay/plugins/community
-RUN mkdir -p /home/mmrelay/plugins/community
+RUN mkdir -p /home/mmrelay/plugins/custom
 
 ENV PATH="/home/mmrelay/bin:$PATH"
 RUN python -m venv /home/mmrelay
