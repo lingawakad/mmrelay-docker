@@ -37,6 +37,6 @@ WORKDIR $(mmpath)
 
 ENV PATH="$(mmpath)/bin:$PATH"
 
-COPY --chown mmrelay:mmrelay --from=build $(mmpath) $(mmpath)
+COPY --chown=mmrelay:mmrelay --from=build $(mmpath) $(mmpath)
 
 ENTRYPOINT ["python", "main.py"]
