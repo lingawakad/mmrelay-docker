@@ -8,7 +8,7 @@ FROM ${python} AS build
 RUN apt-get update \
   && apt-get install gcc -y
   
-RUN adduser --disabled-password --shell /sbin/nologin mmrelay
+RUN adduser --disabled-password --no-create-home --shell /sbin/nologin mmrelay
 
 USER mmrelay
 
