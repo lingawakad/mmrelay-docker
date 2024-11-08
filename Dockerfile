@@ -28,6 +28,9 @@ RUN python -m pip install --upgrade pip \
 # deploy stage
 FROM ${python} AS final
 
+RUN apt-get update \
+  && apt-get install git -y
+
 RUN adduser --disabled-password --shell /sbin/nologin mmrelay
 
 USER mmrelay
