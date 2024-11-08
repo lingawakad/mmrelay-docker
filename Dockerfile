@@ -1,6 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG python=python:3.9-slim
+ARG mmpath=/opt/mmrelay
 
 # build stage
 FROM ${python} AS build
@@ -12,17 +13,17 @@ RUN useradd mmrelay
 
 USER mmrelay
 
-WORKDIR /opt/mmrelay
+WORKDIR $(mmpath)
 
 COPY /meshtastic-matrix-relay/ .
 
-ENV PATH="/opt/mmrelay/bin:$PATH"
-RUN python -m venv /opt/mmrelay
+RUN chown -R mmrelay:mmrelay $(mmpath)
+
+ENV PATH="$(mmpath)/bin:$PATH"
+RUN python -m venv $(mmpath)
 
 RUN python -m pip install --upgrade pip \
   && pip install -r requirements.txt
-
-RUN chown -R mmrelay:mmrelay /opt/mmrelay
 
 # deploy stage
 FROM ${python} AS final
@@ -34,9 +35,8 @@ RUN useradd mmrelay
 
 USER mmrelay
 
-ENV PATH="/opt/mmrelay/bin:$PATH"
-WORKDIR /opt/mmrelay
+ENV PATH="$(mmpath)/bin:$PATH"
 
-COPY --from=build /opt/mmrelay/ /opt/mmrelay/
+COPY --from=build $(mmpath) $(mmpath)
 
 ENTRYPOINT ["python", "main.py"]
