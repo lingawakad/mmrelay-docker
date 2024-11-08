@@ -8,13 +8,15 @@ FROM ${python} AS build
 RUN apt-get update \
   && apt-get install gcc -y
   
-RUN adduser --disabled-password --no-create-home --shell /sbin/nologin mmrelay
+RUN adduser --disabled-password --shell /sbin/nologin mmrelay
 
 USER mmrelay
 
 WORKDIR /home/mmrelay
 
 COPY /meshtastic-matrix-relay/ .
+
+RUN mkdir -p /home/mmrelay/plugins/{community,custom}
 
 ENV PATH="/home/mmrelay/bin:$PATH"
 RUN python -m venv /home/mmrelay
@@ -25,7 +27,7 @@ RUN python -m pip install --upgrade pip \
 # deploy stage
 FROM ${python} AS final
 
-RUN adduser --disabled-password --no-create-home --shell /sbin/nologin mmrelay
+RUN adduser --disabled-password --shell /sbin/nologin mmrelay
 
 USER mmrelay
 
