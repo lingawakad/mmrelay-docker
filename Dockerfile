@@ -22,6 +22,8 @@ RUN python -m venv /opt/mmrelay
 RUN python -m pip install --upgrade pip \
   && pip install -r requirements.txt
 
+RUN chown -R mmrelay:mmrelay /opt/mmrelay
+
 # deploy stage
 FROM ${python} AS final
 
@@ -34,9 +36,7 @@ USER mmrelay
 
 ENV PATH="/opt/mmrelay/bin:$PATH"
 WORKDIR /opt/mmrelay
-VOLUME /opt/mmrelay
 
 COPY --from=build /opt/mmrelay/ /opt/mmrelay/
-RUN chown -R mmrelay:mmrelay /opt/mmrelay
 
 ENTRYPOINT ["python", "main.py"]
