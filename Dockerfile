@@ -8,16 +8,16 @@ FROM ${python} AS build
 RUN apt-get update \
   && apt-get install gcc -y
   
-RUN adduser --disabled-password --no-create-home --shell /sbin/nologin mmrelay
+RUN useradd mmrelay
 
 USER mmrelay
 
-WORKDIR /home/mmrelay
+WORKDIR /opt/mmrelay
 
 COPY /meshtastic-matrix-relay/ .
 
-ENV PATH="/home/mmrelay/bin:$PATH"
-RUN python -m venv /home/mmrelay
+ENV PATH="/opt/mmrelay/bin:$PATH"
+RUN python -m venv /opt/mmrelay
 
 RUN python -m pip install --upgrade pip \
   && pip install -r requirements.txt
@@ -28,14 +28,15 @@ FROM ${python} AS final
 RUN apt-get update \
   && apt-get install git -y
 
-RUN adduser --disabled-password --shell /sbin/nologin mmrelay
+RUN useradd mmrelay
 
 USER mmrelay
 
-ENV PATH="/home/mmrelay/bin:$PATH"
-WORKDIR /home/mmrelay
-VOLUME /home/mmrelay
+ENV PATH="/opt/mmrelay/bin:$PATH"
+WORKDIR /opt/mmrelay
+VOLUME /opt/mmrelay
 
-COPY --from=build /home/mmrelay/ /home/mmrelay/
+COPY --from=build /opt/mmrelay/ /opt/mmrelay/
+RUN chown -R mmrelay:mmrelay /opt/mmrelay
 
 ENTRYPOINT ["python", "main.py"]
