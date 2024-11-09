@@ -16,6 +16,8 @@ WORKDIR /opt/mmrelay
 
 COPY /meshtastic-matrix-relay/ /opt/mmrelay
 
+RUN python -m venv /opt/mmrelay
+
 RUN python -m pip install --upgrade pip \
   && pip install -r requirements.txt
 
