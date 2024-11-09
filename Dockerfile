@@ -37,5 +37,6 @@ WORKDIR /opt/mmrelay
 ENV PATH="/opt/mmrelay/bin:$PATH"
 
 COPY --chown=mmrelay:mmrelay --from=build /opt/mmrelay /opt/mmrelay
+COPY /meshtastic-matrix-relay/ .
 
 ENTRYPOINT ["python", "main.py"]
