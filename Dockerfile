@@ -16,9 +16,6 @@ WORKDIR /opt/mmrelay
 
 COPY /meshtastic-matrix-relay/ /opt/mmrelay
 
-ENV PATH="/opt/mmrelay/bin:$PATH"
-RUN python -m venv /opt/mmrelay
-
 RUN python -m pip install --upgrade pip \
   && pip install -r requirements.txt
 
@@ -34,9 +31,6 @@ USER mmrelay
 
 WORKDIR /opt/mmrelay
 
-ENV PATH="/opt/mmrelay/bin:$PATH"
-
 COPY --chown=mmrelay:mmrelay --from=build /opt/mmrelay /opt/mmrelay
-COPY /meshtastic-matrix-relay/ .
 
 ENTRYPOINT ["python", "main.py"]
