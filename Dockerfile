@@ -7,19 +7,18 @@ FROM ${python} AS build
 
 RUN apt-get update \
   && apt-get install gcc -y
-  
+
 RUN useradd mmrelay
 
 USER mmrelay
 
+ADD --chown=mmrelay:mmrelay https://github.com/geoffwhittington/meshtastic-matrix-relay.git#initial-trunk /opt/mmrelay
+
 WORKDIR /opt/mmrelay
-
-COPY /meshtastic-matrix-relay/ /opt/mmrelay
-
 ENV PATH="/opt/mmrelay/bin:$PATH"
-RUN python -m venv /opt/mmrelay
 
-RUN python -m pip install --upgrade pip \
+RUN python -m venv /opt/mmrelay \
+  && python -m pip install --upgrade pip \
   && pip install -r requirements.txt
 
 # deploy stage
@@ -33,6 +32,8 @@ RUN useradd mmrelay
 USER mmrelay
 
 WORKDIR /opt/mmrelay
+
+ENV PATH="/opt/mmrelay/bin:$PATH"
 
 COPY --chown=mmrelay:mmrelay --from=build /opt/mmrelay /opt/mmrelay
 
