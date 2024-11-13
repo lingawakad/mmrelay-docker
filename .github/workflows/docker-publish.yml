@@ -21,12 +21,6 @@ jobs:
       - name: Get Release Tag
         id: get_release_tag
         run: echo "version=$(echo $GITHUB_REF | cut -d'/' -f3)" >> $GITHUB_OUTPUT
-      - name: Checkout upstream repository
-        uses: actions/checkout@v4
-        with:
-          repository: geoffwhittington/meshtastic-matrix-relay
-          ref: ${{ steps.get_release_tag.outputs.version }}
-          path: meshtastic-matrix-relay
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
