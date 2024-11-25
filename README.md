@@ -10,7 +10,7 @@ Available in two flavors - amd64 and arm64
 
 # To Use
 
-It is probably best to run the container as a non-root user, i.e. and put the config.yaml in ```/opt``` or ```/srv``` or something. Make sure it is owned by the new user
+It is probably best to run the container as a non-root user, i.e. ```mmrelay``` and put the config.yaml in ```/opt``` or ```/srv``` or something. Make sure it is owned by the new user
 
 Obtain a local copy of the [sample_config.yaml](https://raw.githubusercontent.com/geoffwhittington/meshtastic-matrix-relay/main/sample_config.yaml), modify it per their instructions and your use case, rename it to ```config.yaml``` and provide it to the container at the ```/home/mmrelay``` mount 
 
