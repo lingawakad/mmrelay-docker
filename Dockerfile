@@ -19,7 +19,7 @@ ENV PATH="/opt/mmrelay/bin:$PATH"
 
 RUN python -m venv /opt/mmrelay \
   && python -m pip install --upgrade pip \
-  && pip install --user -r requirements.txt
+  && pip install -r requirements.txt
 
 # deploy stage
 FROM ${python} AS final
