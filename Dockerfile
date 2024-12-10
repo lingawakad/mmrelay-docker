@@ -17,7 +17,9 @@ ADD --chown=mmrelay:mmrelay https://github.com/geoffwhittington/meshtastic-matri
 WORKDIR /opt/mmrelay
 ENV PATH="/opt/mmrelay/bin:$PATH"
 
-RUN pip install --user -r requirements.txt
+RUN python -m venv /opt/mmrelay \
+  && python -m pip install --upgrade pip \
+  && pip install --user -r requirements.txt
 
 # deploy stage
 FROM ${python} AS final
