@@ -6,19 +6,18 @@ ARG python=python:3.9-slim
 FROM ${python} AS build
 
 RUN apt-get update \
-  && apt-get install gcc git -y
+  && apt-get install gcc -y
 
 RUN useradd mmrelay
 
 USER mmrelay
 
-ADD --chown=mmrelay:mmrelay https://github.com/geoffwhittington/meshtastic-matrix-relay.git /opt/mmrelay
+ADD --chown=mmrelay:mmrelay https://github.com/geoffwhittington/meshtastic-matrix-relay.git#bot-cmd-work /opt/mmrelay
 
 WORKDIR /opt/mmrelay
 ENV PATH="/opt/mmrelay/bin:$PATH"
 
-RUN git checkout bot-cmd-work \
-  && python -m venv /opt/mmrelay \
+RUN python -m venv /opt/mmrelay \
   && python -m pip install --upgrade pip \
   && pip install -r requirements.txt
 
