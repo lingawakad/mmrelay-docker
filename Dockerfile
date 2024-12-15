@@ -12,7 +12,8 @@ RUN useradd mmrelay
 
 USER mmrelay
 
-ADD --chown=mmrelay:mmrelay https://github.com/geoffwhittington/meshtastic-matrix-relay.git:bot-cmd-work /opt/mmrelay
+ADD --chown=mmrelay:mmrelay https://github.com/geoffwhittington/meshtastic-matrix-relay.git /opt/mmrelay \
+  && git checkout bot-cmd-work
 
 WORKDIR /opt/mmrelay
 ENV PATH="/opt/mmrelay/bin:$PATH"
