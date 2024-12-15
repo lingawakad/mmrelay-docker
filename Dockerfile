@@ -12,13 +12,13 @@ RUN useradd mmrelay
 
 USER mmrelay
 
-ADD --chown=mmrelay:mmrelay https://github.com/geoffwhittington/meshtastic-matrix-relay.git /opt/mmrelay \
-  && git checkout bot-cmd-work
+ADD --chown=mmrelay:mmrelay https://github.com/geoffwhittington/meshtastic-matrix-relay.git /opt/mmrelay
 
 WORKDIR /opt/mmrelay
 ENV PATH="/opt/mmrelay/bin:$PATH"
 
-RUN python -m venv /opt/mmrelay \
+RUN git checkout bot-cmd-work \
+  && python -m venv /opt/mmrelay \
   && python -m pip install --upgrade pip \
   && pip install -r requirements.txt
 
