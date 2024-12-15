@@ -7,34 +7,34 @@ FROM ${python} AS build
 
 RUN apt-get update \
   && apt-get install gcc -y
-  
-RUN adduser --disabled-password --shell /sbin/nologin mmrelay
+
+RUN useradd mmrelay
 
 USER mmrelay
 
-WORKDIR /home/mmrelay
+ADD --chown=mmrelay:mmrelay https://github.com/geoffwhittington/meshtastic-matrix-relay.git:bot-cmd-work /opt/mmrelay
 
-RUN mkdir -p /home/mmrelay/plugins/{community,custom}
+WORKDIR /opt/mmrelay
+ENV PATH="/opt/mmrelay/bin:$PATH"
 
-COPY /meshtastic-matrix-relay/ .
-
-ENV PATH="/home/mmrelay/bin:$PATH"
-RUN python -m venv /home/mmrelay
-
-RUN python -m pip install --upgrade pip \
+RUN python -m venv /opt/mmrelay \
+  && python -m pip install --upgrade pip \
   && pip install -r requirements.txt
 
 # deploy stage
 FROM ${python} AS final
 
-RUN adduser --disabled-password --shell /sbin/nologin mmrelay
+RUN apt-get update \
+  && apt-get install git -y
+
+RUN useradd mmrelay
 
 USER mmrelay
 
-ENV PATH="/home/mmrelay/bin:$PATH"
-WORKDIR /home/mmrelay
-VOLUME /home/mmrelay
+WORKDIR /opt/mmrelay
 
-COPY --from=build /home/mmrelay/ /home/mmrelay/
+ENV PATH="/opt/mmrelay/bin:$PATH"
 
-ENTRYPOINT ["python", "main.py"]
+COPY --chown=mmrelay:mmrelay --from=build /opt/mmrelay /opt/mmrelay
+
+CMD ["python", "main.py"]
