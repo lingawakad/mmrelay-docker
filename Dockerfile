@@ -6,7 +6,9 @@ ARG python=python:3.9-slim
 FROM ${python} AS build
 
 RUN apt-get update \
-  && apt-get install gcc -y
+  && apt-get install \
+  gcc \
+  git -y
 
 RUN useradd mmrelay
 
