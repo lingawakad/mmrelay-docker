@@ -61,9 +61,8 @@ ExecStart=/usr/bin/docker run \
                 --name=%n \
                 --log-driver=none \
                 --user=mmrelay:mmrelay \
-                --read-only \
                 --cap-drop=ALL \
-                -v /opt/config.yaml:/home/mmrelay/config.yaml \
+                -v /opt/config.yaml:/opt/mmrelay/config.yaml \
                 ghcr.io/lingawakad/mmrelay-docker:latest
 
 SyslogIdentifier=mmrelay
