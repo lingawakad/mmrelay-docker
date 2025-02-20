@@ -18,7 +18,6 @@ WORKDIR /opt/mmrelay
 ENV PATH="/opt/mmrelay/bin:$PATH"
 
 RUN python -m venv /opt/mmrelay \
-  && python -m pip install --upgrade pip \
   && pip install -r requirements.txt
 
 # deploy stage
@@ -31,10 +30,10 @@ RUN useradd mmrelay
 
 USER mmrelay
 
-WORKDIR /opt/mmrelay
+COPY --chown=mmrelay:mmrelay --from=build /opt/mmrelay /opt/mmrelay
 
 ENV PATH="/opt/mmrelay/bin:$PATH"
 
-COPY --chown=mmrelay:mmrelay --from=build /opt/mmrelay /opt/mmrelay
+WORKDIR /opt/mmrelay
 
 CMD ["python", "main.py"]
