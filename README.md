@@ -22,6 +22,7 @@ i.e.
 
 ```useradd -M -s /bin/false mmrelay && chown mmrelay:mmrelay /opt/config.yaml```
 
+## Docker Compose
 Add the service to your docker-compose.yml:
 
 ```
@@ -36,6 +37,7 @@ Add the service to your docker-compose.yml:
     image: ghcr.io/lingawakad/mmrelay-docker:latest
 ```
 
+## systemd
 If you'd rather use systemd to manage the container, something along these lines should work fine:
 
 ```/etc/systemd/system/mmrelay.service```
@@ -69,4 +71,7 @@ SyslogIdentifier=mmrelay
 [Install]
 WantedBy=multi-user.target
 ```
-(((note that in this example ```systemctl status mmrelay``` works, and logging is through journald, i.e. ```journalctl -fu mmrelay```)))
+
+Make sure to ```systemctl enable --now mmrelay.service``` to enable and start.
+
+(((note that with this service file logging is through journald, i.e. ```journalctl -fu mmrelay```)))
