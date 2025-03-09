@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG python=python:3-slim
+ARG python=python:3.9-slim
 
 # build stage
 FROM ${python} AS build
