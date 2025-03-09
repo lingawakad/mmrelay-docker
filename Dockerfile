@@ -12,7 +12,7 @@ RUN useradd mmrelay
 
 USER mmrelay
 
-ADD --chown=mmrelay:mmrelay --chmod=700 https://github.com/geoffwhittington/meshtastic-matrix-relay.git /opt/mmrelay
+ADD --chown=mmrelay:mmrelay --chmod=700 https://github.com/geoffwhittington/meshtastic-matrix-relay.git#tcp-reconnect-2 /opt/mmrelay
 
 WORKDIR /opt/mmrelay
 ENV PATH="/opt/mmrelay/bin:$PATH"
