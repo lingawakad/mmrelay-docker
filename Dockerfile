@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG python=python:3.9-slim
+ARG python=python:3-slim
 
 # build stage
 FROM ${python} AS build
@@ -12,7 +12,7 @@ RUN useradd mmrelay
 
 USER mmrelay
 
-ADD --chown=mmrelay:mmrelay --chmod=700 https://github.com/geoffwhittington/meshtastic-matrix-relay.git#tcp-reconnect-2 /opt/mmrelay
+ADD --chown=mmrelay:mmrelay --chmod=700 https://github.com/geoffwhittington/meshtastic-matrix-relay.git /opt/mmrelay
 
 WORKDIR /opt/mmrelay
 ENV PATH="/opt/mmrelay/bin:$PATH"
@@ -25,7 +25,7 @@ RUN python -m venv /opt/mmrelay \
 FROM ${python} AS final
 
 RUN apt-get update \
-  && apt-get install git -y
+  && apt-get install git bluetooth bluez bluez-tools -y
 
 RUN useradd mmrelay
 
