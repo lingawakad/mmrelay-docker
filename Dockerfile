@@ -37,4 +37,6 @@ ENV PATH="/opt/mmrelay/bin:$PATH"
 
 WORKDIR /opt/mmrelay
 
-CMD ["python", "main.py"]
+CMD ["service dbus start"]
+CMD ["service bluez start"]
+CMD ["python", "main.py"] 
