@@ -21,7 +21,7 @@ RUN python -m venv /opt/mmrelay \
 FROM ${python} AS final
 
 RUN apt-get update \
-  && apt-get install git bluetooth bluez bluez-tools -y
+  && apt-get install git dbus bluez -y
 
 COPY --chmod=700 --from=build /opt/mmrelay /opt/mmrelay
 
