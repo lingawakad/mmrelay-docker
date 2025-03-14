@@ -1,5 +1,5 @@
 #!/bin/bash
 service dbus start
-service bluez start
+service bluetooth start
 
 python /opt/mmrelay/main.py
