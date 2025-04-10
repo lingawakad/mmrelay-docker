@@ -4,15 +4,13 @@
 
 This project merely Dockerizes it
 
-Available in two flavors - amd64 and arm64
-  - amd64 is confirmed to work
-  - arm64 is untested
+Available in two flavors - amd64 and arm64 - now with bluetooth support!
 
 # To Use
 
-It is probably best to run the container as a non-root user, i.e. ```mmrelay``` and put the config.yaml in ```/opt``` or ```/srv``` or something. Make sure it is owned by the new user
+If you want to connect via bluetooth, ensure that the bluetoothd service on the host is disabled, e.g.```sudo systemctl disable --now bluetooth.service``` so that the container can take control. when the container starts, you'll have to ```docker exec -ti mmrelay.service /bin/bash```, then pair and connect with your meshtastic node (e.g. ```bluetoothctl```, ```pair AA:BB:CC:DD:EE:FF``` and input your code)
 
-Obtain a local copy of the [sample_config.yaml](https://raw.githubusercontent.com/geoffwhittington/meshtastic-matrix-relay/main/sample_config.yaml), modify it per their instructions and your use case, rename it to ```config.yaml``` and provide it to the container at the ```/home/mmrelay``` mount 
+Obtain a local copy of the [sample_config.yaml](https://raw.githubusercontent.com/geoffwhittington/meshtastic-matrix-relay/main/sample_config.yaml), modify it per the instructions and your use case, and save it at ```/opt/config.yaml```
 
 i.e.
 
@@ -20,25 +18,8 @@ i.e.
 
 ```vim /opt/config.yaml```
 
-```useradd -M -s /bin/false mmrelay && chown mmrelay:mmrelay /opt/config.yaml```
-
-## Docker Compose
-Add the service to your docker-compose.yml:
-
-```
-  mmrelay-docker:
-    container_name: mmrelay
-    user: mmrelay:mmrelay
-    read_only: true
-    cap_drop:
-      - ALL
-    volumes:
-      - /opt/config.yaml:/home/mmrelay/config.yaml
-    image: ghcr.io/lingawakad/mmrelay-docker:latest
-```
-
 ## systemd
-If you'd rather use systemd to manage the container, something along these lines should work fine:
+something along these lines should work to run mmrelay as a service:
 
 ```/etc/systemd/system/mmrelay.service```
 
@@ -57,13 +38,14 @@ ExecStartPre=-/usr/bin/docker stop %n
 ExecStartPre=-/usr/bin/docker rm %n
 ExecStartPre=/usr/bin/docker pull ghcr.io/lingawakad/mmrelay-docker:latest
 ExecStart=/usr/bin/docker run \
-                --rm \
-                --name=%n \
-                --log-driver=none \
-                --user=mmrelay:mmrelay \
-                --cap-drop=ALL \
-                -v /opt/config.yaml:/opt/mmrelay/config.yaml \
-                ghcr.io/lingawakad/mmrelay-docker:latest
+        --rm \
+        --init \
+        --name=%n \
+        --log-driver=none \
+        --cap-add=NET_ADMIN \
+        --net=host \
+        -v /opt/config.yaml:/opt/mmrelay/config.yaml \
+        ghcr.io/lingawakad/mmrelay-docker:latest
 
 SyslogIdentifier=mmrelay
 
