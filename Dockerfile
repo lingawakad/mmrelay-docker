@@ -3,29 +3,14 @@
 ARG python=python:3-slim
 
 # build stage
-FROM ${python} AS build
-
-RUN apt-get update \
-  && apt-get install gcc git -y
-
-ADD --chmod=700 https://github.com/geoffwhittington/meshtastic-matrix-relay.git /opt/mmrelay
-
-WORKDIR /opt/mmrelay
-ENV PATH="/opt/mmrelay/bin:$PATH"
-
-RUN python -m venv /opt/mmrelay \
-  && pip install --upgrade pip \
-  && pip install -r requirements.txt
-
-# deploy stage
-FROM ${python} AS final
+FROM ${python}
 
 RUN apt-get update \
   && apt-get install git dbus bluez -y
 
-COPY --chmod=700 --from=build /opt/mmrelay /opt/mmrelay
+WORKDIR /root
 
-ENV PATH="/opt/mmrelay/bin:$PATH"
+RUN mkdir ~/.mmrelay && pip install mmrelay
 
 COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
