@@ -8,9 +8,9 @@ FROM ${python}
 RUN apt-get update \
   && apt-get install git dbus bluez -y
 
-WORKDIR /root
+WORKDIR /opt/mmrelay
 
-RUN mkdir ~/.mmrelay && pip install mmrelay
+RUN pip install mmrelay
 
 COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
