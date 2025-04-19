@@ -2,4 +2,4 @@
 service dbus start
 service bluetooth start
 
-python /opt/mmrelay/main.py
+mmrelay --config /opt/mmrelay/config.yaml
