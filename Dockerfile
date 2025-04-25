@@ -6,13 +6,11 @@ ARG python=python:3-slim
 FROM ${python}
 
 RUN apt-get update \
-  && apt-get install git dbus bluez -y
+  && apt-get install git dbus bluez pipx -y
 
 WORKDIR /opt/mmrelay
 
-RUN python3 -m pip install --user pipx \
-  && python3 -m pipx ensurepath \
-  && pipx install mmrelay
+RUN pipx install mmrelay
 
 COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh

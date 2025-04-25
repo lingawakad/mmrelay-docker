@@ -2,4 +2,4 @@
 service dbus start
 service bluetooth start
 
-mmrelay --config /opt/mmrelay/config.yaml
+/root/.local/bin/mmrelay --config /opt/mmrelay/config.yaml
