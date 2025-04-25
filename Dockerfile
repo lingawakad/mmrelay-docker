@@ -10,7 +10,7 @@ RUN apt-get update \
 
 WORKDIR /opt/mmrelay
 
-RUN pipx install mmrelay
+RUN pipx ensurepath --global && pipx install mmrelay
 
 COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
