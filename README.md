@@ -30,23 +30,25 @@ Requires=docker.service
 After=docker.service
 
 [Service]
-TimeoutStartSec=0
-Restart=always
-RestartSec=30
-
-ExecStartPre=-/usr/bin/docker stop %n
-ExecStartPre=-/usr/bin/docker rm %n
-ExecStartPre=/usr/bin/docker pull ghcr.io/lingawakad/mmrelay-docker:latest
-ExecStart=/usr/bin/docker run \
+Type=simple
+ExecStartPre=bash -c '/usr/bin/docker stop --timeout=30 mmrelay 2>/dev/null || true'
+ExecStartPre=bash -c '/usr/bin/docker rm mmrelay 2>/dev/null || true'
+ExecStartPre=/usr/bin/docker create \
         --rm \
         --init \
-        --name=%n \
+        --name=mmrelay \
         --log-driver=none \
         --cap-add=NET_ADMIN \
         --net=host \
         -v /opt/config.yaml:/opt/mmrelay/config.yaml \
         ghcr.io/lingawakad/mmrelay-docker:latest
 
+ExecStart=/usr/bin/docker start --attach mmrelay
+ExecStop=bash -c '/usr/bin/docker stop --timeout=30 mmrelay 2>/dev/null || true'
+ExecStop=bash -c '/usr/bin/docker rm mmrelay 2>/dev/null || true'
+
+Restart=always
+RestartSec=30
 SyslogIdentifier=mmrelay
 
 [Install]
