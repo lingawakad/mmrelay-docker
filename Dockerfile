@@ -7,8 +7,8 @@ FROM ${python}
 
 WORKDIR /opt/mmrelay
 
-RUN apt-get update \
-    && apt-get install git dbus bluez pipx -y \
+RUN apk update \
+    && apk add git dbus bluez pipx -y \
     && pipx install mmrelay
 
 COPY ./entrypoint.sh /
