@@ -1,3 +1,6 @@
+For historical purposes only - upstream now has docker support
+
+
 # M<>M Relay - Dockerized
 
 [Meshtastic <=> Matrix Relay](https://github.com/geoffwhittington/meshtastic-matrix-relay) is a powerful and easy-to-use relay between Meshtastic devices and Matrix chat rooms, allowing seamless communication across platforms.
